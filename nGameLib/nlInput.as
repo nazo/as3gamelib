@@ -1,5 +1,5 @@
 package nGameLib {
-    import flash.display.*;  
+    import flash.display.*;
     import flash.events.*;
     import flash.ui.*;
 
@@ -20,15 +20,15 @@ package nGameLib {
         public static const KEY_BUTTON6:uint = 1 << 9;
         public static const KEY_BUTTON7:uint = 1 << 10;
         public static const KEY_BUTTON8:uint = 1 << 11;
-        
+
         private static const MAX_KEY:uint = 12;
         private var curState:uint = 0;
         private var prevState:uint = 0;
-        
+
         private var down:uint = 0;
         private var press:uint = 0;
         private var up:uint = 0;
-        
+
         // キーコンフィグ
         private var keyMap:Object = {
             38:KEY_UP,
@@ -44,41 +44,41 @@ package nGameLib {
             68:KEY_BUTTON7,
             70:KEY_BUTTON8
         };
-        
+
         public function nlInput() {
         }
-        
+
         public function onKeyDown(evt:KeyboardEvent):void {
             if (keyMap[evt.keyCode] != undefined) {
                 curState |= keyMap[evt.keyCode];
             }
         }
-        
+
         public function onKeyUp(evt:KeyboardEvent):void {
             if (keyMap[evt.keyCode] != undefined) {
                 curState &= (0xFFFFFFFF ^ keyMap[evt.keyCode]);
             }
         }
-        
+
         public function calcFrame():void {
             down = curState;
             var x:uint = down ^ prevState;
-            
+
             press = down & x;
             up = prevState & x;
-            
+
             prevState = curState;
         }
-        
+
         // 入力チェック
         public function isKeyDown(key:uint):Boolean {
             return ((down & key) != 0);
         }
-        
+
         public function isKeyUp(key:uint):Boolean {
             return ((up & key) != 0);
         }
-        
+
         public function isKeyPress(key:uint):Boolean {
             return ((press & key) != 0);
         }
